@@ -9,8 +9,11 @@ import com.naturalprogrammer.spring5tutorial.mail.MailSender;
 @RestController
 public class MailController {
 	
-	@Autowired
 	private MailSender mailSender;
+
+	public MailController(MailSender smtp) {
+		this.mailSender = smtp;
+	}
 
 	@RequestMapping("/mail")
 	public String mail() {
