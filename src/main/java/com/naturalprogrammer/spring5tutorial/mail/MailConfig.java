@@ -3,7 +3,7 @@ package com.naturalprogrammer.spring5tutorial.mail;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @Configuration
 public class MailConfig {
@@ -18,8 +18,8 @@ public class MailConfig {
 	
 	@Bean
 	@ConditionalOnProperty("spring.mail.host")
-	public MailSender smtpMailSender() {
+	public MailSender smtpMailSender(JavaMailSender javaMailSender) {
 		
-		return new SmtpMailSender();
+		return new SmtpMailSender(javaMailSender);
 	}
 }
