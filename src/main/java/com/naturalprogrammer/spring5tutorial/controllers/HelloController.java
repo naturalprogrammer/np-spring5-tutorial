@@ -1,15 +1,25 @@
 package com.naturalprogrammer.spring5tutorial.controllers;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HelloController {
 	
 	@RequestMapping("/hello")
-	public String hello() {
+	public String hello(Model model) {
 		
-		return "Hello, world ";
+		model.addAttribute("name", "Sanjay");
+		
+		return "hello";
 	}
-
+	
+//	@RequestMapping("/hello")
+//	public ModelAndView hello() {
+//		
+//        ModelAndView mav = new ModelAndView("hello"); // the logical view name
+//		mav.addObject("name", "Sanjay");
+//		return mav;
+//	}
 }
