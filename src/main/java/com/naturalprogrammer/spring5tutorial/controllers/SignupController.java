@@ -3,6 +3,7 @@ package com.naturalprogrammer.spring5tutorial.controllers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,9 @@ public class SignupController {
 	private static Log log = LogFactory.getLog(SignupController.class);
 
 	@GetMapping
-	public String signup() {
+	public String signup(Model model) {
 		
+		model.addAttribute(new UserCommand());
 		return "signup";
 	}	
 
