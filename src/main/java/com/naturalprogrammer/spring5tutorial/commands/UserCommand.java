@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class UserCommand {
 	
-	@NotBlank
+	@NotBlank(message="{blankEmail}")
 	@Email
-	@Size(min=4, max=250)
+	@Size(min=4, max=250, message="{emailSizeError}")
 	private String email;
 	
 	@NotBlank

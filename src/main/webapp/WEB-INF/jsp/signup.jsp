@@ -8,7 +8,7 @@
     <h3 class="panel-title">Please signup</h3>
   </div>
   <div class="panel-body">
-	<form:form modelAttribute="userCommand">
+	<form:form modelAttribute="user">
 	
 	  <form:errors cssClass="error"/>
 	  
