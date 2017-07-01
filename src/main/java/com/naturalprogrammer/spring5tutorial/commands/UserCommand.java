@@ -5,6 +5,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.naturalprogrammer.spring5tutorial.domain.User;
+
 public class UserCommand {
 	
 	@NotBlank(message="{blankEmail}")
@@ -37,5 +39,16 @@ public class UserCommand {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public User toUser() {
+		
+		User user = new User();
+		
+		user.setEmail(email);
+		user.setName(name);
+		user.setPassword(password);
+		
+		return user;
 	}
 }
