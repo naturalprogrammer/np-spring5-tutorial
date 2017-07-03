@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.naturalprogrammer.spring5tutorial.domain.User;
+import com.naturalprogrammer.spring5tutorial.validation.Password;
 import com.naturalprogrammer.spring5tutorial.validation.UniqueEmail;
 
 public class UserCommand {
@@ -16,8 +17,7 @@ public class UserCommand {
 	@Size(min=1, max=100)
 	private String name;
 	
-	@NotBlank
-	@Size(min=6, max=32)
+	@Password
 	private String password;
 	
 	public String getEmail() {
