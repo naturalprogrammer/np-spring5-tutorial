@@ -11,10 +11,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="usr")
+@Table(name="usr", indexes = {
+	@Index(columnList = "email", unique=true)
+})
 public class User {
 	
 	public static enum Role {

@@ -2,16 +2,14 @@ package com.naturalprogrammer.spring5tutorial.commands;
 
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.naturalprogrammer.spring5tutorial.domain.User;
+import com.naturalprogrammer.spring5tutorial.validation.UniqueEmail;
 
 public class UserCommand {
 	
-	@NotBlank(message="{blankEmail}")
-	@Email
-	@Size(min=4, max=250, message="{emailSizeError}")
+	@UniqueEmail
 	private String email;
 	
 	@NotBlank
