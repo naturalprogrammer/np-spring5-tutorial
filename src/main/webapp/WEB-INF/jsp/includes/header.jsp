@@ -78,3 +78,10 @@
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 </nav>
+
+<c:if test="${not empty flashMessage}">
+	<div class="alert alert-${flashKind} alert-dismissible" role="alert">
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  ${flashMessage}
+	</div>
+</c:if>

@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
 import com.naturalprogrammer.spring5tutorial.services.UserService;
+import com.naturalprogrammer.spring5tutorial.utils.MyUtils;
 
 @Controller
 @RequestMapping("/signup")
@@ -36,12 +38,14 @@ public class SignupController {
 
 	@PostMapping
 	public String doSignup(@Validated @ModelAttribute("user") UserCommand user,
-			BindingResult result) {
+			BindingResult result,
+			RedirectAttributes redirectAttributes) {
 		
 		if (result.hasErrors())
 			return "signup";
 		
 		userService.signup(user);
+		MyUtils.flash(redirectAttributes, "success", "signupSuccess");
 		return "redirect:/";
 	}	
 }
