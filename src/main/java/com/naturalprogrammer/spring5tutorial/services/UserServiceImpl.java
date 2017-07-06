@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,15 @@ import com.naturalprogrammer.spring5tutorial.repositories.UserRepository;
 public class UserServiceImpl implements UserService {
 	
 	private static Log log = LogFactory.getLog(UserServiceImpl.class);
+	
+	@Value("${application.admin.email:admin@example.com}")
+	private String adminEmail;
+	
+	@Value("${application.admin.name:First Admin}")
+	private String adminName;
+
+	@Value("${application.admin.password:password}")
+	private String adminPassword;
 
 	private UserRepository userRepository;
 	
@@ -36,9 +46,20 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@EventListener
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void afterApplicationReady(ApplicationReadyEvent event) {
 		
-		log.info("Inside afterApplicationReady");
+		User user = new User();
+		
+		if (!userRepository.findByEmail(adminEmail).isPresent()) {
+
+			user.setEmail(adminEmail);
+			user.setName(adminName);
+			user.setPassword(adminPassword);
+			user.getRoles().add(Role.ADMIN);
+			
+			userRepository.save(user);
+		}		
 	}
 
 	@Override
