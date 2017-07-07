@@ -8,6 +8,22 @@
     <h3 class="panel-title">Please sign in</h3>
   </div>
   <div class="panel-body">
+  
+  	<c:if test="${param.logout != null}">
+  		<div class="alert alert-success">
+  			You have been logged out
+  		</div>
+  	</c:if>
+  	
+  	<c:if test="${param.error != null}">
+  		<div class="alert alert-danger">
+  			Failed to login.
+  			<c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+  				Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+  			</c:if>
+  		</div>
+  	</c:if>
+
 	<form:form>
 	
 	  <div class="form-group">
