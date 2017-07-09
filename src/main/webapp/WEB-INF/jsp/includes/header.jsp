@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,27 +62,40 @@
 	        <button type="submit" class="btn btn-default">Submit</button>
 	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="/signup">
-	        	<span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-	        	Sign up</a>
-	        </li>
-	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	          <ul class="dropdown-menu">
-	            <li>
-	            	<form:form id="logoutForm" action="/logout">
-	            	</form:form>
-	            	<a href="#" onclick="document.getElementById('logoutForm').submit()">
-	            		<span class="glyphicon glyphicon-log-out"></span>
-	            		Sign out
-	            	</a>
-	            </li>
-	            <li><a href="#">Another action</a></li>
-	            <li><a href="#">Something else here</a></li>
-	            <li role="separator" class="divider"></li>
-	            <li><a href="#">Separated link</a></li>
-	          </ul>
-	        </li>
+	      	<sec:authorize access="isAnonymous()">
+		        <li><a href="/signup">
+		        	<span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+		        	Sign up</a>
+		        </li>
+		        <li><a href="/login">
+		        	<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+		        	Login</a>
+		        </li>
+	        </sec:authorize>
+	        <sec:authorize access="isAuthenticated()">
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		          
+		          	<sec:authentication property="principal.name"/>
+		          
+		          	<span class="caret"></span>
+		          </a>
+		          <ul class="dropdown-menu">
+		            <li>
+		            	<form:form id="logoutForm" action="/logout">
+		            	</form:form>
+		            	<a href="#" onclick="document.getElementById('logoutForm').submit()">
+		            		<span class="glyphicon glyphicon-log-out"></span>
+		            		Sign out
+		            	</a>
+		            </li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li role="separator" class="divider"></li>
+		            <li><a href="#">Separated link</a></li>
+		          </ul>
+		        </li>
+	        </sec:authorize>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
