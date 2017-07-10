@@ -91,8 +91,10 @@
 		            </li>
 		            <li><a href="#">Another action</a></li>
 		            <li><a href="#">Something else here</a></li>
-		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Separated link</a></li>
+		            <sec:authorize access="hasRole('ADMIN')">
+			            <li role="separator" class="divider"></li>
+			            <li><a href="/admin">Admin</a></li>
+		            </sec:authorize>
 		          </ul>
 		        </li>
 	        </sec:authorize>
