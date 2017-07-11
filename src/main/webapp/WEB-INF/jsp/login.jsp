@@ -35,6 +35,13 @@
 	    <label for="password">Password</label>
 	    <input name="password" id="password" type="password" class="form-control" placeholder="Password" />
 	  </div>
+	  
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox" name="remember-me"> Remember Me
+	    </label>
+	  </div>
+	  
 	  <button type="submit" class="btn btn-primary">Sign In</button>
 	</form:form>
   </div>

@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +32,14 @@ public class UserServiceImpl implements UserService {
 	@Value("${application.admin.password:password}")
 	private String adminPassword;
 
+	private PasswordEncoder passwordEncoder;
 	private UserRepository userRepository;
 	
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository,
+			PasswordEncoder passwordEncoder) {
 
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@PostConstruct
@@ -55,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 			user.setEmail(adminEmail);
 			user.setName(adminName);
-			user.setPassword(adminPassword);
+			user.setPassword(passwordEncoder.encode(adminPassword));
 			user.getRoles().add(Role.ADMIN);
 			
 			userRepository.save(user);
@@ -67,6 +71,7 @@ public class UserServiceImpl implements UserService {
 	public void signup(UserCommand userCommand) {
 		
 		User user = userCommand.toUser();
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.getRoles().add(Role.UNVERIFIED);
 		
 		userRepository.save(user);
