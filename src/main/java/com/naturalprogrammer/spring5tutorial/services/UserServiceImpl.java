@@ -16,6 +16,7 @@ import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
 import com.naturalprogrammer.spring5tutorial.domain.User;
 import com.naturalprogrammer.spring5tutorial.domain.User.Role;
 import com.naturalprogrammer.spring5tutorial.repositories.UserRepository;
+import com.naturalprogrammer.spring5tutorial.utils.MyUtils;
 
 @Service("userService")
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
@@ -75,5 +76,6 @@ public class UserServiceImpl implements UserService {
 		user.getRoles().add(Role.UNVERIFIED);
 		
 		userRepository.save(user);
+		MyUtils.afterCommit(() -> MyUtils.login(user));
 	}
 }
