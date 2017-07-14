@@ -1,6 +1,9 @@
 package com.naturalprogrammer.spring5tutorial.services;
 
+import java.util.UUID;
+
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
 import com.naturalprogrammer.spring5tutorial.domain.User;
 import com.naturalprogrammer.spring5tutorial.domain.User.Role;
+import com.naturalprogrammer.spring5tutorial.mail.MailSender;
 import com.naturalprogrammer.spring5tutorial.repositories.UserRepository;
 import com.naturalprogrammer.spring5tutorial.utils.MyUtils;
 
@@ -35,12 +39,18 @@ public class UserServiceImpl implements UserService {
 
 	private PasswordEncoder passwordEncoder;
 	private UserRepository userRepository;
+	private MailSender mailSender;
+	private String applicationUrl;
 	
 	public UserServiceImpl(UserRepository userRepository,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder,
+			MailSender mailSender,
+			@Value("${applicationUrl}") String applicationUrl) {
 
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.mailSender = mailSender;
+		this.applicationUrl = applicationUrl;
 	}
 	
 	@PostConstruct
@@ -74,8 +84,30 @@ public class UserServiceImpl implements UserService {
 		User user = userCommand.toUser();
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.getRoles().add(Role.UNVERIFIED);
+		user.setVerificationCode(UUID.randomUUID().toString());
 		
 		userRepository.save(user);
-		MyUtils.afterCommit(() -> MyUtils.login(user));
+		MyUtils.afterCommit(() -> {
+			
+			MyUtils.login(user);
+			try {
+				
+				sendVerificationMail(user);
+				
+			} catch (MessagingException e) {
+				
+				log.warn("Sending verification mail to "
+						+ user.getEmail() + " failed", e);
+			}
+		});
+	}
+
+	private void sendVerificationMail(User user) throws MessagingException {
+		
+		String verificationLink = applicationUrl + "/users/" +
+				user.getVerificationCode() + "/verify";
+		
+		mailSender.send(user.getEmail(), MyUtils.getMessage("verifySubject"),
+				MyUtils.getMessage("verifyBody", verificationLink));
 	}
 }

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
@@ -102,6 +103,13 @@
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 </nav>
+
+<sec:authorize access="hasRole('UNVERIFIED')">
+	<div class="alert alert-warning alert-dismissible" role="alert">
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  <spring:message code="pleaseVerify" />
+	</div>
+</sec:authorize>
 
 <c:if test="${not empty flashMessage}">
 	<div class="alert alert-${flashKind} alert-dismissible" role="alert">

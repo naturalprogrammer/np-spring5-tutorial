@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@include file="includes/header.jsp"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <div class="panel panel-primary">
   <div class="panel-heading">

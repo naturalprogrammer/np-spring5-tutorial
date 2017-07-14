@@ -45,6 +45,9 @@ public class User implements UserDetails {
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
 	private Collection<Role> roles = new HashSet<Role>();
+	
+	@Column(length=36)
+	private String verificationCode;
 
 	public Long getId() {
 		return id;
@@ -85,6 +88,14 @@ public class User implements UserDetails {
 
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
 	}
 
 	@Override
