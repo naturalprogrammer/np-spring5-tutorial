@@ -110,4 +110,22 @@ public class UserServiceImpl implements UserService {
 		mailSender.send(user.getEmail(), MyUtils.getMessage("verifySubject"),
 				MyUtils.getMessage("verifyBody", verificationLink));
 	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void verify(String verificationCode) {
+		
+		User currentUser = MyUtils.currentUser().get();
+		
+		User user = userRepository.getOne(currentUser.getId());
+		
+		MyUtils.validate(user.getRoles().contains(Role.UNVERIFIED), "alreadyVerified");
+		MyUtils.validate(verificationCode.equals(user.getVerificationCode()), "wrongVerificationCode");
+
+		user.getRoles().remove(Role.UNVERIFIED);
+		user.setVerificationCode(null);
+		
+		userRepository.save(user);
+		MyUtils.afterCommit(() -> MyUtils.login(user));
+	}
 }

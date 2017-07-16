@@ -79,4 +79,10 @@ public class MyUtils {
 			    }
 			);	
 	}
+	
+	public static void validate(boolean valid, String messageKey, Object ... messageArgs) {
+		
+		if (!valid)
+			throw new RuntimeException(MyUtils.getMessage(messageKey, messageArgs));
+	}
 }

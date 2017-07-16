@@ -8,4 +8,5 @@ public interface UserService {
 
 	void signup(UserCommand userCommand);
 	void afterApplicationReady(ApplicationReadyEvent event);
+	void verify(String verificationCode);
 }
