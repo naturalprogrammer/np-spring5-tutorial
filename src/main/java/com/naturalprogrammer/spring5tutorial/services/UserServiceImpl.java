@@ -1,5 +1,6 @@
 package com.naturalprogrammer.spring5tutorial.services;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -127,5 +128,34 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.save(user);
 		MyUtils.afterCommit(() -> MyUtils.login(user));
+	}
+
+	@Override
+	public void resendVerificationMail(User user) throws MessagingException {
+		
+		MyUtils.validate(user != null, "userNotFound");
+		MyUtils.validate(isAdminOrSelfLoggedIn(user), "notPermitted");
+		MyUtils.validate(user.getRoles().contains(Role.UNVERIFIED),
+				"alreadyVerified");
+		
+		sendVerificationMail(user);		
+	}
+
+	private boolean isAdminOrSelfLoggedIn(User user) {
+		
+		Optional<User> currentUser = MyUtils.currentUser();
+		
+		if (!currentUser.isPresent())
+			return false;
+		
+		User cUser = currentUser.get();
+		
+		if (cUser.getRoles().contains(Role.ADMIN))
+			return true;
+		
+		if (cUser.getId().equals(user.getId()))
+			return true;
+
+		return false;
 	}
 }
