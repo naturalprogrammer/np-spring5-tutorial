@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.naturalprogrammer.spring5tutorial.commands.ForgotPasswordCommand;
 import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
 import com.naturalprogrammer.spring5tutorial.domain.User;
 import com.naturalprogrammer.spring5tutorial.domain.User.Role;
@@ -157,5 +158,10 @@ public class UserServiceImpl implements UserService {
 			return true;
 
 		return false;
+	}
+
+	@Override
+	public void forgotPassword(ForgotPasswordCommand forgotPasswordCommand) {
+		log.info("Resetting password for " + forgotPasswordCommand.getEmail());
 	}
 }
