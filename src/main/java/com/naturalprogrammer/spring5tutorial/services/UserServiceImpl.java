@@ -162,6 +162,24 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void forgotPassword(ForgotPasswordCommand forgotPasswordCommand) {
-		log.info("Resetting password for " + forgotPasswordCommand.getEmail());
+		
+		User user = userRepository.findByEmail(forgotPasswordCommand.getEmail()).get();
+		
+		user.setResetPasswordCode(UUID.randomUUID().toString());
+		userRepository.save(user);
+		MyUtils.afterCommit(() -> mailResetPasswordLink(user));
+	}
+
+	private void mailResetPasswordLink(User user) {
+		
+		String resetPasswordLink = applicationUrl + "/reset-password/" +
+				user.getResetPasswordCode();
+		
+		try {
+			mailSender.send(user.getEmail(), MyUtils.getMessage("resetPasswordSubject"),
+					MyUtils.getMessage("resetPasswordBody", resetPasswordLink));
+		} catch (MessagingException e) {
+			log.warn("Error sending reset password mail to " + user.getEmail(), e);
+		}
 	}
 }

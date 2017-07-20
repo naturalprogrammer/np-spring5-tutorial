@@ -49,6 +49,9 @@ public class User implements UserDetails {
 	@Column(length=36)
 	private String verificationCode;
 
+	@Column(length=36, unique=true)
+	private String resetPasswordCode;
+
 	public Long getId() {
 		return id;
 	}
@@ -96,6 +99,14 @@ public class User implements UserDetails {
 
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
+	}
+
+	public String getResetPasswordCode() {
+		return resetPasswordCode;
+	}
+
+	public void setResetPasswordCode(String resetPasswordCode) {
+		this.resetPasswordCode = resetPasswordCode;
 	}
 
 	@Override
