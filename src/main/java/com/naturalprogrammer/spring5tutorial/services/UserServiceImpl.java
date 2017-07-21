@@ -182,4 +182,20 @@ public class UserServiceImpl implements UserService {
 			log.warn("Error sending reset password mail to " + user.getEmail(), e);
 		}
 	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void resetPassword(String resetPasswordCode, String password) {
+		
+		Optional<User> user = userRepository
+				.findByResetPasswordCode(resetPasswordCode);
+		
+		MyUtils.validate(user.isPresent(), "wrongResetPasswordCode");
+		User u = user.get();
+		
+		u.setPassword(passwordEncoder.encode(password));
+		u.setResetPasswordCode(null);
+		
+		userRepository.save(u);
+	}
 }

@@ -1,9 +1,8 @@
 package com.naturalprogrammer.spring5tutorial.commands;
 
 import com.naturalprogrammer.spring5tutorial.validation.Password;
-import com.naturalprogrammer.spring5tutorial.validation.RetypePassword;
 
-@RetypePassword
+//@RetypePassword
 public class ResetPasswordCommand {
 	
 	@Password

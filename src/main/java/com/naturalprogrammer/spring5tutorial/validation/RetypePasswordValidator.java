@@ -8,18 +8,11 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
 import com.naturalprogrammer.spring5tutorial.commands.ResetPasswordCommand;
-import com.naturalprogrammer.spring5tutorial.repositories.UserRepository;
 
 @Component
 public class RetypePasswordValidator
 	implements ConstraintValidator<RetypePassword, ResetPasswordCommand> {
 	
-	private UserRepository userRepository;
-	
-	public RetypePasswordValidator(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
 	@Override
 	public void initialize(RetypePassword arg0) {
 		// TODO Auto-generated method stub
@@ -27,9 +20,16 @@ public class RetypePasswordValidator
 	}
 
 	@Override
-	public boolean isValid(ResetPasswordCommand resetPasswordCommand, ConstraintValidatorContext arg1) {
+	public boolean isValid(ResetPasswordCommand resetPasswordCommand, ConstraintValidatorContext context) {
 		
-		return Objects.equals(resetPasswordCommand.getPassword(),
-				resetPasswordCommand.getRetypePassword());
+		if (Objects.equals(resetPasswordCommand.getPassword(),
+				resetPasswordCommand.getRetypePassword()))
+			return true;
+		
+		context.disableDefaultConstraintViolation();
+		context.buildConstraintViolationWithTemplate("{passwordsDoNotMatch}")
+			.addPropertyNode("retypePassword").addConstraintViolation();
+		
+		return false;
 	}
 }

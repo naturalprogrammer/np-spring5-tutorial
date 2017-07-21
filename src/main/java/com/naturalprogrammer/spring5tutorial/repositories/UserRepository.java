@@ -9,4 +9,5 @@ import com.naturalprogrammer.spring5tutorial.domain.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	
 	Optional<User> findByEmail(String email);
+	Optional<User> findByResetPasswordCode(String resetPasswordCode);
 }
