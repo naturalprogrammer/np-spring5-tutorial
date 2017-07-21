@@ -16,4 +16,5 @@ public interface UserService {
 	void resendVerificationMail(User user) throws MessagingException;
 	void forgotPassword(ForgotPasswordCommand forgotPasswordCommand);
 	void resetPassword(String resetPasswordCode, String password);
+	User fetchById(Long userId);
 }

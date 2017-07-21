@@ -3,6 +3,7 @@ package com.naturalprogrammer.spring5tutorial.controllers;
 import javax.mail.MessagingException;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +39,12 @@ public class UserController {
 		userService.resendVerificationMail(user);
 		MyUtils.flash(redirectAttributes, "success", "verificationMailResent");
 		return "redirect:/";
+	}
+	
+	@GetMapping("/{userId}")
+	public String getById(@PathVariable Long userId, Model model) {
+		
+		model.addAttribute(userService.fetchById(userId));
+		return "user";
 	}
 }

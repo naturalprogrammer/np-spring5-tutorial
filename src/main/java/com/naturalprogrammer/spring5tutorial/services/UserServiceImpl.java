@@ -198,4 +198,16 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.save(u);
 	}
+
+	@Override
+	public User fetchById(Long userId) {
+		
+		User user = userRepository.getOne(userId);
+		MyUtils.validate(user != null, "userNotFound");
+		
+		if (!isAdminOrSelfLoggedIn(user))
+			user.setEmail("Confidential");
+		
+		return user;
+	}
 }
