@@ -211,4 +211,25 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void update(User oldUser, UserCommand userCommand) {
+		
+		MyUtils.validate(oldUser != null, "userNotFound");
+		MyUtils.validate(isAdminOrSelfLoggedIn(oldUser), "notPermitted");
+		
+		oldUser.setName(userCommand.getName());
+		
+		User currentUser = MyUtils.currentUser().get();
+		if (currentUser.getRoles().contains(Role.ADMIN))
+			oldUser.setRoles(userCommand.getRoles());
+		
+		userRepository.save(oldUser);
+		
+		MyUtils.afterCommit(() -> {
+			if (currentUser.getId().equals(oldUser.getId()))
+					MyUtils.login(oldUser);
+		});
+	}
 }

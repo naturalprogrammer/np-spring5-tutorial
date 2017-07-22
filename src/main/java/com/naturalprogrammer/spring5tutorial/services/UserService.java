@@ -17,4 +17,5 @@ public interface UserService {
 	void forgotPassword(ForgotPasswordCommand forgotPasswordCommand);
 	void resetPassword(String resetPasswordCode, String password);
 	User fetchById(Long userId);
+	void update(User oldUser, UserCommand userCommand);
 }
