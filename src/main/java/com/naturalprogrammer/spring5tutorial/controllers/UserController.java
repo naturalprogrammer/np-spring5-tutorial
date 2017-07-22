@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
+import com.naturalprogrammer.spring5tutorial.commands.UserCommand.UpdateValidation;
 import com.naturalprogrammer.spring5tutorial.domain.User;
 import com.naturalprogrammer.spring5tutorial.services.UserService;
 import com.naturalprogrammer.spring5tutorial.utils.MyUtils;
@@ -62,7 +63,8 @@ public class UserController {
 	
 	@PostMapping("/{userId}/edit")
 	public String update(@PathVariable("userId") User oldUser,
-			@Validated @ModelAttribute("user") UserCommand userCommand,
+			@Validated(UpdateValidation.class)
+			@ModelAttribute("user") UserCommand userCommand,
 			BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		

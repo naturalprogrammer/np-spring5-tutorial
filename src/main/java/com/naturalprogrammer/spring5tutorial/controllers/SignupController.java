@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturalprogrammer.spring5tutorial.commands.UserCommand;
+import com.naturalprogrammer.spring5tutorial.commands.UserCommand.SignupValidation;
 import com.naturalprogrammer.spring5tutorial.services.UserService;
 import com.naturalprogrammer.spring5tutorial.utils.MyUtils;
 
@@ -37,7 +38,9 @@ public class SignupController {
 	}	
 
 	@PostMapping
-	public String doSignup(@Validated @ModelAttribute("user") UserCommand user,
+	public String doSignup(
+			@Validated(SignupValidation.class)
+			@ModelAttribute("user") UserCommand user,
 			BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		

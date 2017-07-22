@@ -14,14 +14,18 @@ import com.naturalprogrammer.spring5tutorial.validation.UniqueEmail;
 
 public class UserCommand {
 	
-	@UniqueEmail
+	public static interface SignupValidation {}
+	public static interface UpdateValidation {}
+	
+	
+	@UniqueEmail(groups = SignupValidation.class)
 	private String email;
 	
-	@NotBlank
-	@Size(min=1, max=100)
+	@NotBlank(groups = {SignupValidation.class, UpdateValidation.class})
+	@Size(min=1, max=100, groups = {SignupValidation.class, UpdateValidation.class})
 	private String name;
 	
-	@Password
+	@Password(groups = SignupValidation.class)
 	private String password;
 	
 	private Collection<Role> roles = new HashSet<Role>();
