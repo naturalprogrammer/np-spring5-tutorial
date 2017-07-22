@@ -205,7 +205,8 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.getOne(userId);
 		MyUtils.validate(user != null, "userNotFound");
 		
-		if (!isAdminOrSelfLoggedIn(user))
+		user.setEditable(isAdminOrSelfLoggedIn(user));
+		if (!user.isEditable())
 			user.setEmail("Confidential");
 		
 		return user;

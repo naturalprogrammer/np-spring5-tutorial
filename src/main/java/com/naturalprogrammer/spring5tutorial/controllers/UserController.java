@@ -47,4 +47,11 @@ public class UserController {
 		model.addAttribute(userService.fetchById(userId));
 		return "user";
 	}
+	
+	@GetMapping("/{userId}/edit")
+	public String edit(@PathVariable("userId") User user, Model model) {
+		
+		model.addAttribute(user);
+		return "user-edit";
+	}
 }

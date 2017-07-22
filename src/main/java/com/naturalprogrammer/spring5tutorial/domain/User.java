@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -51,6 +52,9 @@ public class User implements UserDetails {
 
 	@Column(length=36, unique=true)
 	private String resetPasswordCode;
+	
+	@Transient
+	private boolean editable;
 
 	public Long getId() {
 		return id;
@@ -107,6 +111,14 @@ public class User implements UserDetails {
 
 	public void setResetPasswordCode(String resetPasswordCode) {
 		this.resetPasswordCode = resetPasswordCode;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override
