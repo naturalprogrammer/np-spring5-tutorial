@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 				.mvcMatchers(HttpMethod.GET, "/",
+						"/css/**", "/js/**", "/images/**",
 						"/users/*").permitAll()
 				.mvcMatchers("/signup",
 						"/forgot-password",
